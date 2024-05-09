@@ -13,7 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 
-public class HomeController extends Controller implements Initializable{
+public class HomeSceneController extends Controller implements Initializable{
     @FXML
     private Button searchSwitch, reloadButton;
     @FXML
@@ -22,7 +22,10 @@ public class HomeController extends Controller implements Initializable{
     private ScrollPane homeScrollPane;
     @FXML
     private GridPane homeGrid;
+    @FXML
+    private Label loadLabel;
     private static List<Article> articles = new ArrayList<>();
+    private int loadedArticles = 0;
 
     public void switchSearch(ActionEvent e) throws IOException{
         Main.switchScene(Main.SEARCH_SCENE);
@@ -39,18 +42,28 @@ public class HomeController extends Controller implements Initializable{
         } 
     }
     public void reload(){
+        loadedArticles = 0;
+        homeGrid.getChildren().clear();
+        load(null);
+    }
+
+    public void load(MouseEvent event){
         try {
-            articles = Main.getArticles();
-            for (int i = 0; i < articles.size(); i++) {
-                homeGrid.add(articles.get(i).getThumbnail(), 0, i+1);
+            articles = Main.readData();
+            for (int i = 0; i < 30; i++) {
+                if (loadedArticles >= articles.size()) {
+                    break;
+                }
+                homeGrid.add(articles.get(loadedArticles).getThumbnail(), 0, loadedArticles+1);
+                loadedArticles++;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
     }
+
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         
-    
     }
 }

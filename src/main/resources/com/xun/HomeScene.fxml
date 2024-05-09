@@ -33,6 +33,7 @@
 -->
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -46,7 +47,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.xun.HomeController">
+<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.xun.HomeSceneController">
    <children>
       <HBox spacing="20.0" VBox.vgrow="NEVER">
          <children>
@@ -79,14 +80,26 @@
             <Insets />
          </VBox.margin>
          <content>
-            <GridPane fx:id="homeGrid" alignment="CENTER" prefHeight="0.0">
-              <rowConstraints>
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <columnConstraints>
-                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
-               </columnConstraints>
-            </GridPane>
+            <VBox alignment="CENTER">
+               <children>
+                  <GridPane fx:id="homeGrid" alignment="CENTER" prefHeight="0.0">
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
+                     </columnConstraints>
+                  </GridPane>
+                  <Label fx:id="loadLabel" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#load" prefHeight="50.0" styleClass="over" stylesheets="@styles.css" text="CLICK TO LOAD MORE / クリックでもっと見る" textAlignment="CENTER" textFill="#9f9f9f" VBox.vgrow="NEVER">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+               </children>
+            </VBox>
          </content>
       </ScrollPane>
    </children>

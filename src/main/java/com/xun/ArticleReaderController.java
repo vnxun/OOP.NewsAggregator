@@ -1,9 +1,12 @@
 package com.xun;
 
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 
 public class ArticleReaderController extends Controller{
     @FXML
@@ -39,5 +42,12 @@ public class ArticleReaderController extends Controller{
         contentLabel.setText(a.getContent());
         keywordsLabel.setText(a.getKeywords());
         hyperlink.setText(a.getLink());
+    }
+    public void hyperlinkAction(ActionEvent e){
+        String copyText = hyperlink.getText();
+        final Clipboard clipboard = Clipboard.getSystemClipboard();
+        final ClipboardContent content = new ClipboardContent();
+        content.putString(copyText);
+        clipboard.setContent(content);
     }
 }

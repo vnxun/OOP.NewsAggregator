@@ -27,7 +27,7 @@ public class Main extends Application {
     public static final int SEARCH_SCENE = 1;
     public static final int READER_SCENE = 2;
     private static int activeScene = HOME_SCENE, lastScene = HOME_SCENE;
-    private static final String dataFileName = "output2.csv";
+    private static final String dataFileName = "output.csv";
     
 
     @Override
@@ -40,6 +40,7 @@ public class Main extends Application {
             stage.setTitle("フィードリーダー");
             stage.getIcons().add(new Image(getClass().getResource("icon.png").toURI().toString()));
             stage.setScene(scene);
+            //readData();
             reloadHome();
             stage.show();
         } catch (Exception e) {
@@ -76,13 +77,13 @@ public class Main extends Application {
     }
     public static void reloadHome(){
         readData();
-        HomeController controller = loaders.get(HOME_SCENE).getController();
+        HomeSceneController controller = loaders.get(HOME_SCENE).getController();
         controller.reload();
     }
     //
 
     //Get articles
-    private static void readData (){
+    public static List<Article> readData (){
         BufferedReader bReader;
         try {
             bReader = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream(dataFileName)));
@@ -111,6 +112,7 @@ public class Main extends Application {
         } catch (Exception fnfe) {
             fnfe.printStackTrace();
         }
+        return articles;
     }
 
     private static String[] splitData(String line){
@@ -142,8 +144,8 @@ public class Main extends Application {
         return data;
     }  
 
-    public static List<Article> getArticles() {
-        return articles;
-    }
+    // public static List<Article> getArticles() {
+    //     return articles;
+    // }
     //
 }

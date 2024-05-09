@@ -10,7 +10,7 @@ import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 
-public class SearchController extends Controller implements Initializable{
+public class SearchSceneController extends Controller implements Initializable{
     private String prompt;
     private final String[] searchOptions = {"Search by keywords", "Search by Title", "Search by Authors"};
     private int searchMode = 0;
