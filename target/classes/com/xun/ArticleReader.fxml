@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="850.0" spacing="20.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.xun.ArticleReaderController">
+   <children>
+      <Label fx:id="titleLabel" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Cole Palmer đi vào lịch sử" textAlignment="CENTER" wrapText="true" VBox.vgrow="ALWAYS">
+         <font>
+            <Font name="System Bold" size="36.0" />
+         </font>
+      </Label>
+      <BorderPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="17.6" VBox.vgrow="NEVER">
+         <left>
+            <Label fx:id="authorLabel" text="Tiểu Lam" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <Label fx:id="timeLabel" text="08:38 Thứ hai 06/05/2024" BorderPane.alignment="CENTER" />
+         </right>
+      </BorderPane>
+      <BorderPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="17.6" VBox.vgrow="NEVER">
+         <left>
+            <Label fx:id="categoryLabel" text="Football news" BorderPane.alignment="CENTER" />
+         </left>
+         <right>
+            <Label fx:id="keywordsLabel" text="Cole Palmer, Chelsea, West Ham" BorderPane.alignment="CENTER" />
+         </right>
+      </BorderPane>
+      <Label fx:id="summaryLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Bàn thắng ngay trước sinh nhật vào lưới West Ham United thuộc vòng 36 Premier League tối 5/5 giúp Cole Palmer tạo ra cột mốc ấn tượng." textAlignment="JUSTIFY" wrapText="true">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="contentLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Trên sân Stamford Bridge, Chelsea có trận đấu tiếp đón West Ham. The Blues dễ dàng làm chủ thế trận từ đầu và hạ gục đối thủ với tỷ số đậm 5-0. Ở đó, Cole Palmer tiếp tục tỏa sáng. Cựu tiền đạo Man City chính là người ghi bàn mở tỷ số. Lúc này, Palmer đã có 21 pha lập công, qua đó tiếp tục bám đuổi Erling Haaland (25 bàn) trong cuộc đua Vua phá lưới. Palmer cũng trở thành cầu thủ thứ 3 trong lịch sử Premier League in dấu giày vào 30 bàn thắng trở lên (ghi bàn/kiến tạo) khi chỉ 21 tuổi hoặc trẻ hơn.Tính trên mọi đấu trường, Palmer đóng góp vào 36 bàn thắng của The Blues. Thành tích này của cựu tài năng Man City chỉ xếp sau hai huyền thoại là Robbie Fowler (1994/95, 1995/96) cũng như Chris Sutton (1993/94).Palmer xứng đáng nhận nhiều lời ngợi khen từ các CĐV. Có thể khẳng định Palmer là một trong bản hợp đồng tốt nhất của giải Ngoại hạng Anh mùa này. Nếu không có Palmer, chắc chắn vị trí của đội chủ sân Stamford Bridge còn tệ hơn thế trong mùa giải năm nay. " textAlignment="JUSTIFY" wrapText="true" VBox.vgrow="ALWAYS">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Hyperlink fx:id="hyperlink" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="24.0" text="https://www.bongda.com.vn/cole-palmer-di-vao-lich-su-d732858.html" wrapText="true" />
+   </children>
+   <padding>
+      <Insets left="10.0" right="10.0" />
+   </padding>
+</VBox>
