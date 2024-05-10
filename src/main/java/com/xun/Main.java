@@ -22,12 +22,13 @@ public class Main extends Application {
     private static Scene scene;
     private static List<Parent> roots = new ArrayList<>();
     private static List<FXMLLoader> loaders = new ArrayList<>();
-    private static List<Article> articles = new ArrayList<>();
+    private static List<Article> allArticles = new ArrayList<>();
     public static final int HOME_SCENE = 0;
     public static final int SEARCH_SCENE = 1;
     public static final int READER_SCENE = 2;
     private static int activeScene = HOME_SCENE, lastScene = HOME_SCENE;
-    private static final String dataFileName = "output.csv";
+    private static final String dataFileName = "output6.csv";
+    private static SearchEngine searchEngine;
     
 
     @Override
@@ -40,7 +41,6 @@ public class Main extends Application {
             stage.setTitle("フィードリーダー");
             stage.getIcons().add(new Image(getClass().getResource("icon.png").toURI().toString()));
             stage.setScene(scene);
-            //readData();
             reloadHome();
             stage.show();
         } catch (Exception e) {
@@ -49,6 +49,8 @@ public class Main extends Application {
     }
     
     public static void main(String[] args) {
+        readData();
+        searchEngine = new SearchEngine(allArticles);
         launch();
     }
 
@@ -76,7 +78,6 @@ public class Main extends Application {
         switchScene(READER_SCENE);
     }
     public static void reloadHome(){
-        readData();
         HomeSceneController controller = loaders.get(HOME_SCENE).getController();
         controller.reload();
     }
@@ -86,12 +87,12 @@ public class Main extends Application {
     public static List<Article> readData (){
         BufferedReader bReader;
         try {
-            bReader = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream(dataFileName)));
+            bReader = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream("output/" + dataFileName)));
             bReader.readLine(); //skip header row
             String line;
             while ((line = bReader.readLine()) != null) {
                 String data[] = splitData(line);
-                int id = (int) Double.parseDouble(data[0]);
+                //int id = (int) Double.parseDouble(data[0]);
                 String link = data[1];
                 String title = data[2];
                 String date = data[3];
@@ -100,19 +101,19 @@ public class Main extends Application {
                 String content = data[6];
                 String category = data[7];
                 String keywords = data[8];
-                Article article = new Article(id, link, title, content);
+                Article article = new Article(link, title, content);
                 article.setSummary(summary);
                 article.setAuthor(author);
                 article.setCategory(category);
                 article.setDate(date);
                 article.setKeywords(keywords);
-                articles.add(article);
+                allArticles.add(article);
             }
             bReader.close();
-        } catch (Exception fnfe) {
-            fnfe.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return articles;
+        return allArticles;
     }
 
     private static String[] splitData(String line){
@@ -120,7 +121,7 @@ public class Main extends Application {
         boolean insideComma = false;
         StringBuffer s = new StringBuffer();
         int index = 0;
-        for (int i = 0; i < line.length() - 1; i++) {
+        for (int i = 0; i < line.length(); i++) {
             if (line.charAt(i) == '"') {
                 if (line.charAt(i+1) == '"' && insideComma) {
                     s.append('"');
@@ -131,8 +132,8 @@ public class Main extends Application {
             } else if ((line.charAt(i) == ',' && !insideComma)) {
                 data[index] = s.toString();
                 index++;
-                s = new StringBuffer();       
-            } else if (i == line.length() - 2) {
+                s.setLength(0);       
+            } else if (i == line.length() - 1) {
                 s.append(line.charAt(i));
                 data[index] = s.toString();
                 index++;
@@ -144,8 +145,13 @@ public class Main extends Application {
         return data;
     }  
 
-    // public static List<Article> getArticles() {
-    //     return articles;
-    // }
-    //
+    public static List<Article> getAllArticles() {
+        return allArticles;
+    }
+
+    public static SearchEngine getSearchEngine() {
+        return searchEngine;
+    }
+    
+    
 }

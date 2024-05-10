@@ -4,23 +4,28 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
 
 public class Article {
-    private int id = -1;
     private String link = "", title = "", category = "", content = "", date = "", summary = "", author = "", keywords = "";
-    //private boolean check;
-    private VBox thumbnail, reader;
+    private VBox thumbnail = null, reader = null;
     
     //Constructors
-    public Article(int id, String link, String title, String content){
-        this.id = id;
+    public Article(String link, String title, String content){
         this.link = link;
         this.title = title;
         this.content = content;
         try {
-            this.summary = content.substring(0, 100);
+            StringBuilder s = new StringBuilder(); //take the first sentence of the content
+            for (int i = 0; i < content.length(); i++) {
+                if (!(content.charAt(i) == '.' && content.charAt(i+1) == ' ')) {
+                    s.append(content.charAt(i));
+                } else {
+                    s.append('.');
+                    break;
+                }
+            }
+            this.summary = s.toString();
         } catch (Exception e) {
-            this.summary = content.substring(0, content.length());
-        }
-             
+            this.summary = content;
+        }             
     }
 
     private void setThumb(){
@@ -47,9 +52,6 @@ public class Article {
     }
 
     //Accessors
-    public int getId() {
-        return id;
-    }
 
     public String getLink() {
         return link;
@@ -81,7 +83,7 @@ public class Article {
     }
 
     public void setSummary(String summary) {
-        if (!summary.isEmpty()) {
+        if (!summary.isEmpty() && summary.length() > 10) {
             this.summary = summary;
         }
     }
@@ -120,12 +122,16 @@ public class Article {
     }
 
     public VBox getThumbnail() {
-        setThumb();
+        if (thumbnail == null) {
+            setThumb();
+        }
         return thumbnail;
     }
     
     public VBox getReader() {
-        setReader();
+        if (reader == null) {
+            setReader();
+        }
         return reader;
     }
 
@@ -135,5 +141,10 @@ public class Article {
 
     public void setKeywords(String keywords) {
         this.keywords = keywords;
+    }
+
+    @Override 
+    public String toString(){
+        return String.format("[%s] %s", hashCode(), link);
     }
 }

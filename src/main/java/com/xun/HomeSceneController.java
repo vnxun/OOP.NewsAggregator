@@ -24,8 +24,9 @@ public class HomeSceneController extends Controller implements Initializable{
     private GridPane homeGrid;
     @FXML
     private Label loadLabel;
-    private static List<Article> articles = new ArrayList<>();
+    private List<Article> articles = Main.getAllArticles();
     private int loadedArticles = 0;
+    private SearchEngine searchEngine = Main.getSearchEngine();
 
     public void switchSearch(ActionEvent e) throws IOException{
         Main.switchScene(Main.SEARCH_SCENE);
@@ -36,25 +37,29 @@ public class HomeSceneController extends Controller implements Initializable{
         }
     }
     public void search(ActionEvent e){
-        String prompt = searchBox.getText();
-        if (prompt.length() > 0) {
-            System.out.println(prompt);
+        String keywords = searchBox.getText();
+        if (keywords.length() > 0) {
+            articles = searchEngine.search(keywords);
+            loadedArticles = 0;
+            homeGrid.getChildren().clear();
+            load(null);
         } 
     }
+
     public void reload(){
         loadedArticles = 0;
         homeGrid.getChildren().clear();
+        articles = Main.getAllArticles();
         load(null);
     }
 
     public void load(MouseEvent event){
         try {
-            articles = Main.readData();
             for (int i = 0; i < 30; i++) {
                 if (loadedArticles >= articles.size()) {
                     break;
                 }
-                homeGrid.add(articles.get(loadedArticles).getThumbnail(), 0, loadedArticles+1);
+                homeGrid.add(articles.get(loadedArticles).getThumbnail(), 0, loadedArticles + 1);
                 loadedArticles++;
             }
         } catch (Exception exception) {
@@ -64,6 +69,8 @@ public class HomeSceneController extends Controller implements Initializable{
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        
+        // if (articles.isEmpty()) {
+        //     articles = Main.getAllArticles();
+        // }
     }
 }
