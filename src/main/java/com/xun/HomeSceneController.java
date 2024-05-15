@@ -2,7 +2,6 @@ package com.xun;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -17,39 +16,23 @@ public class HomeSceneController extends Controller implements Initializable{
     @FXML
     private Button searchSwitch, reloadButton;
     @FXML
-    private TextField searchBox;
-    @FXML
     private ScrollPane homeScrollPane;
     @FXML
     private GridPane homeGrid;
     @FXML
     private Label loadLabel;
-    private List<Article> articles = Main.getAllArticles();
+    private List<Article> articles = Main.getArticlesList();
     private int loadedArticles = 0;
-    private SearchEngine searchEngine = Main.getSearchEngine();
 
     public void switchSearch(ActionEvent e) throws IOException{
         Main.switchScene(Main.SEARCH_SCENE);
     }
-    public void keyEventHandler(KeyEvent e){
-        if (e.getCode() == KeyCode.ENTER) {
-            search(null);
-        }
-    }
-    public void search(ActionEvent e){
-        String keywords = searchBox.getText();
-        if (keywords.length() > 0) {
-            articles = searchEngine.search(keywords);
-            loadedArticles = 0;
-            homeGrid.getChildren().clear();
-            load(null);
-        } 
-    }
+
 
     public void reload(){
         loadedArticles = 0;
         homeGrid.getChildren().clear();
-        articles = Main.getAllArticles();
+        articles = Main.getArticlesList();
         load(null);
     }
 
@@ -57,10 +40,12 @@ public class HomeSceneController extends Controller implements Initializable{
         try {
             for (int i = 0; i < 30; i++) {
                 if (loadedArticles >= articles.size()) {
+                    loadLabel.setVisible(false);
                     break;
                 }
                 homeGrid.add(articles.get(loadedArticles).getThumbnail(), 0, loadedArticles + 1);
                 loadedArticles++;
+                loadLabel.setVisible(true);
             }
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -69,8 +54,5 @@ public class HomeSceneController extends Controller implements Initializable{
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-        // if (articles.isEmpty()) {
-        //     articles = Main.getAllArticles();
-        // }
     }
 }

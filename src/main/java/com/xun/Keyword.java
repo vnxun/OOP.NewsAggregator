@@ -7,15 +7,24 @@ import java.util.Map.Entry;
 
 public class Keyword {
     private String word;
-    private HashMap<Integer, Article> map = new HashMap<>();
+    private HashMap<Article, Integer> map = new HashMap<>();
 
     public Keyword(String word) {
         this.word = word;
     }
 
     public void addArticle(Article a){
-        if (map.get(a.hashCode()) == null) {
-            map.put(a.hashCode(), a);
+        if (map.get(a) == null) {
+            map.put(a, 1);
+        } else {
+            map.put(a, map.get(a) + 1);
+        }
+    }
+    public void addArticle(Article a, int score){
+        if (map.get(a) == null) {
+            map.put(a, score);
+        } else {
+            map.put(a, map.get(a) + score);
         }
     }
 
@@ -51,10 +60,16 @@ public class Keyword {
 
     public List<Article> getArticles() {
         List<Article> articles = new ArrayList<>();
-        for (Entry<Integer, Article> entry: map.entrySet()) {
-            articles.add(entry.getValue());
+        for (Entry<Article, Integer> entry: map.entrySet()) {
+            articles.add(entry.getKey());
         }
         return articles;
     }
-    
+
+    public int getArticleScore(Article a){
+        if (map.get(a) == null) {
+            return 0;
+        }
+        return map.get(a);
+    }
 }

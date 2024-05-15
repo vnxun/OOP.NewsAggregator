@@ -3,23 +3,25 @@ package com.xun;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 
 public class SearchEngine {
     private List<Article> allArticles;
-    private HashMap<Integer, Keyword> map = new HashMap<>();
+    private HashMap<String, Keyword> wordsMap = new HashMap<>();
+    private HashMap<String, List<Article>> newsSourceMap = new HashMap<>();
 
     public SearchEngine(List<Article> allArticles) {
         this.allArticles = allArticles;
         indexing();
-        printIndex(); // TODO remove this
+        printIndex(); // TODO for debugging
     }
 
     private void indexing(){
         if (allArticles.isEmpty()) {
-            allArticles = Main.getAllArticles();
+            allArticles = Main.getArticlesList();
             
         }
         for (Article article : allArticles) {
@@ -28,67 +30,80 @@ public class SearchEngine {
     }
 
     private void indexing(Article a){
-        StringBuffer s = new StringBuffer();
-        String content = a.getTitle() + " " + a.getSummary() + " " + a.getContent();
-        for (int i = 0; i < content.length(); i++) {
-            char c = content.charAt(i);
-            if (Character.isWhitespace(c)) {
-                if (s.length() > 1) {
-                    Keyword w = new Keyword(s.toString());
-                    if (map.get(w.hashCode()) == null) {
-                        w.addArticle(a);    //Keyword not existed yet
-                        map.put(w.hashCode(), w);
-                    } else {
-                        map.get(w.hashCode()).addArticle(a);
-                    }
-                }
-                s.setLength(0);
-            } else if (i == content.length() - 1) {
-                if (Character.isLetter(c)) {
-                    s.append(Character.toLowerCase(c));
-                }
-                if (s.length() > 1) {
-                    Keyword w = new Keyword(s.toString());
-                    if (map.get(w.hashCode()) == null) {
-                        w.addArticle(a);    //Keyword not existed yet
-                        map.put(w.hashCode(), w);
-                    } else {
-                        map.get(w.hashCode()).addArticle(a);
-                    }
-                }
-            } else if (Character.isLetter(c)) {
-                s.append(Character.toLowerCase(c));
+        scoring(a, split(a.getContent()), 1);
+        scoring(a, split(a.getSummary()), 10);
+        scoring(a, split(a.getKeywords()), 100);
+        scoring(a, split(a.getTitle()), 1000);
+        
+        String np = a.getSource();
+        if (newsSourceMap.get(np) == null) {
+            List<Article> list = new ArrayList<>();
+            list.add(a);
+            newsSourceMap.put(np, list);
+        } else {
+            newsSourceMap.get(np).add(a);
+        }
+    }
+    private void scoring(Article a, List<String> wordsList, int score){
+        for (String word : wordsList) {
+            Keyword kw = new Keyword(word);
+            if (wordsMap.get(word) == null) {
+                kw.addArticle(a, score);
+                wordsMap.put(word, kw);
+            } else {
+                wordsMap.get(word).addArticle(a, score);
             }
         }
     }
-    
-    public List<Article> search(String keywords){
-        List<Article> results = new ArrayList<>();
-        StringBuffer s = new StringBuffer();
-        for (int i = 0; i < keywords.length(); i++) {
-            char c = keywords.charAt(i);
-            if (Character.isWhitespace(c)) {
-                Keyword w = new Keyword(s.toString());
-                if (map.get(w.hashCode()) != null) {
-                    for (Article article : map.get(w.hashCode()).getArticles()) {
-                        results.add(article);
-                    }
+
+    private List<String> split(String string){
+        List<String> list = new ArrayList<>();
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < string.length(); i++) {
+            char c = string.charAt(i);
+            if (Character.isWhitespace(c) || c == ',' || c == ';') {
+                if (buffer.length() > 1) {
+                    list.add(buffer.toString());
                 }
-                s.setLength(0);
-            } else if (i == keywords.length() - 1) {
+                buffer.setLength(0);
+            } else if (i == string.length() - 1) {
                 if (Character.isLetter(c)) {
-                    s.append(Character.toLowerCase(c));
+                    buffer.append(Character.toLowerCase(c));
+                } else if (Character.isDigit(c)) {
+                    buffer.append(c);
                 }
-                Keyword w = new Keyword(s.toString());
-                if (map.get(w.hashCode()) != null) {
-                    for (Article article : map.get(w.hashCode()).getArticles()) {
-                        results.add(article);
-                    }
+                if (buffer.length() > 1) {
+                    list.add(buffer.toString());
                 }
             } else if (Character.isLetter(c)) {
-                s.append(Character.toLowerCase(c));
+                buffer.append(Character.toLowerCase(c));
+            } else if (Character.isDigit(c)) {
+                buffer.append(c);
             }
         }
+        return list;
+    }
+    
+    public List<Article> search(String query){
+        HashMap<Article, Integer> articlesScoreMap = new HashMap<>();
+        List<String> wordsList = split(query);
+        for (String word : wordsList) {
+            if (wordsMap.get(word) != null) {
+                for (Article article : wordsMap.get(word).getArticles()) {
+                    int score = wordsMap.get(word).getArticleScore(article);
+                    if (articlesScoreMap.get(article) == null) {
+                        articlesScoreMap.put(article, score);
+                    } else {
+                        articlesScoreMap.put(article, articlesScoreMap.get(article) + score);
+                    }
+                }
+            }
+        }
+        List<Article> results = new ArrayList<>();
+        for (Entry<Article, Integer> entry : articlesScoreMap.entrySet()) {
+            results.add(entry.getKey());
+        }
+        results.sort(new SortArticles(articlesScoreMap));
         return results;
     }
 
@@ -97,10 +112,11 @@ public class SearchEngine {
         FileWriter writer;
         try {
             writer = new FileWriter("index.csv");
-            for (Map.Entry<Integer, Keyword> entry : map.entrySet()) {
+            for (Entry<String, Keyword> entry : wordsMap.entrySet()) {
                 StringBuilder s = new StringBuilder();
                 s.append(entry.getValue() + ",");
                 for (Article article : entry.getValue().getArticles()) {
+                    s.append("score:" + entry.getValue().getArticleScore(article) + " ");
                     s.append(article);
                     s.append(",");
                 }
@@ -110,7 +126,21 @@ public class SearchEngine {
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }  
+    }
+    //
+
+    private class SortArticles implements Comparator<Article>{
+        HashMap<Article, Integer> articlesScoreMap;
+
+        public SortArticles(HashMap<Article, Integer> articlesScoreMap){
+            this.articlesScoreMap = articlesScoreMap;
         }
-        
+        @Override
+        public int compare(Article a1, Article a2) {
+            int score1 = articlesScoreMap.get(a1);
+            int score2 = articlesScoreMap.get(a2);
+            return score2 - score1;
+        }   
     }
 }

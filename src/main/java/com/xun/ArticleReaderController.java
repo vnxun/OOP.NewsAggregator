@@ -31,6 +31,10 @@ public class ArticleReaderController extends Controller{
     private Label titleLabel;
 
     @FXML
+    private Label sourceLabel;
+
+
+    @FXML
     private Hyperlink hyperlink;
 
     public void setData(Article a){
@@ -42,6 +46,7 @@ public class ArticleReaderController extends Controller{
         contentLabel.setText(a.getContent());
         keywordsLabel.setText(a.getKeywords());
         hyperlink.setText(a.getLink());
+        sourceLabel.setText(a.getSource());
     }
     public void hyperlinkAction(ActionEvent e){
         String copyText = hyperlink.getText();

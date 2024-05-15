@@ -23,12 +23,12 @@
          </right>
       </BorderPane>
       <BorderPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="17.6" VBox.vgrow="NEVER">
-         <left>
-            <Label fx:id="categoryLabel" text="Football news" BorderPane.alignment="CENTER" />
-         </left>
          <right>
-            <Label fx:id="keywordsLabel" text="Cole Palmer, Chelsea, West Ham" BorderPane.alignment="CENTER" />
+            <Label fx:id="categoryLabel" text="Football news" BorderPane.alignment="CENTER" />
          </right>
+         <left>
+            <Label fx:id="sourceLabel" text="Bongda.com" BorderPane.alignment="CENTER" />
+         </left>
       </BorderPane>
       <Label fx:id="summaryLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Bàn thắng ngay trước sinh nhật vào lưới West Ham United thuộc vòng 36 Premier League tối 5/5 giúp Cole Palmer tạo ra cột mốc ấn tượng." textAlignment="JUSTIFY" wrapText="true">
          <font>
@@ -40,6 +40,7 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <Label fx:id="keywordsLabel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Cole Palmer, Chelsea, West Ham" textAlignment="JUSTIFY" wrapText="true" />
       <Hyperlink fx:id="hyperlink" maxHeight="-Infinity" minHeight="-Infinity" onAction="#hyperlinkAction" prefHeight="24.0" text="https://www.bongda.com.vn/cole-palmer-di-vao-lich-su-d732858.html" wrapText="true" />
    </children>
    <padding>

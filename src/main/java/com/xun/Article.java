@@ -4,7 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
 
 public class Article {
-    private String link = "", title = "", category = "", content = "", date = "", summary = "", author = "", keywords = "";
+    private String link, title, category, content, date, summary, author, keywords, source;
     private VBox thumbnail = null, reader = null;
     
     //Constructors
@@ -146,5 +146,13 @@ public class Article {
     @Override 
     public String toString(){
         return String.format("[%s] %s", hashCode(), link);
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }
