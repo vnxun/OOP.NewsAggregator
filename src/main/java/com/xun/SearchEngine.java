@@ -1,7 +1,9 @@
 package com.xun;
 
+import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -11,12 +13,14 @@ import java.util.Map.Entry;
 public class SearchEngine {
     private List<Article> allArticles;
     private HashMap<String, Keyword> wordsMap = new HashMap<>();
+    private HashMap<String, String> lemmatizerMap = new HashMap<>();
     private HashMap<String, List<Article>> newsSourceMap = new HashMap<>();
 
     public SearchEngine(List<Article> allArticles) {
         this.allArticles = allArticles;
+        getLemmatizer();
         indexing();
-        printIndex(); // TODO for debugging
+        printIndex(); printLemmatizer(); // TODO for debugging
     }
 
     private void indexing(){
@@ -30,10 +34,10 @@ public class SearchEngine {
     }
 
     private void indexing(Article a){
-        scoring(a, split(a.getContent()), 1);
-        scoring(a, split(a.getSummary()), 10);
-        scoring(a, split(a.getKeywords()), 100);
-        scoring(a, split(a.getTitle()), 1000);
+        scoring(a, tokenize(a.getContent()), 1);
+        scoring(a, tokenize(a.getSummary()), 2);
+        scoring(a, tokenize(a.getKeywords()), 5);
+        scoring(a, tokenize(a.getTitle()), 10);
         
         String np = a.getSource();
         if (newsSourceMap.get(np) == null) {
@@ -56,14 +60,14 @@ public class SearchEngine {
         }
     }
 
-    private List<String> split(String string){
+    private List<String> tokenize(String string){
         List<String> list = new ArrayList<>();
         StringBuffer buffer = new StringBuffer();
         for (int i = 0; i < string.length(); i++) {
             char c = string.charAt(i);
             if (Character.isWhitespace(c) || c == ',' || c == ';') {
                 if (buffer.length() > 1) {
-                    list.add(buffer.toString());
+                    list.add(lemmatize(buffer.toString()));
                 }
                 buffer.setLength(0);
             } else if (i == string.length() - 1) {
@@ -73,7 +77,7 @@ public class SearchEngine {
                     buffer.append(c);
                 }
                 if (buffer.length() > 1) {
-                    list.add(buffer.toString());
+                    list.add(lemmatize(buffer.toString()));
                 }
             } else if (Character.isLetter(c)) {
                 buffer.append(Character.toLowerCase(c));
@@ -83,10 +87,31 @@ public class SearchEngine {
         }
         return list;
     }
+    private String lemmatize(String s){
+        String lemma = lemmatizerMap.get(s);
+        if (lemma != null) {
+            return lemmatizerMap.get(s);
+        }
+        return s;
+        
+    }
     
+    private void getLemmatizer(){
+        BufferedReader bReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("lemmatizer.csv")));
+        String line;
+        try {
+            while ((line = bReader.readLine()) != null) {
+                String[] lineContent = line.split(",");
+                lemmatizerMap.put(lineContent[0], lineContent[2]);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public List<Article> search(String query){
         HashMap<Article, Integer> articlesScoreMap = new HashMap<>();
-        List<String> wordsList = split(query);
+        List<String> wordsList = tokenize(query);
         for (String word : wordsList) {
             if (wordsMap.get(word) != null) {
                 for (Article article : wordsMap.get(word).getArticles()) {
@@ -111,7 +136,7 @@ public class SearchEngine {
     private void printIndex(){
         FileWriter writer;
         try {
-            writer = new FileWriter("index.csv");
+            writer = new FileWriter("WordsIndex.csv");
             for (Entry<String, Keyword> entry : wordsMap.entrySet()) {
                 StringBuilder s = new StringBuilder();
                 s.append(entry.getValue() + ",");
@@ -120,6 +145,22 @@ public class SearchEngine {
                     s.append(article);
                     s.append(",");
                 }
+                s.append("\n");
+                writer.write(s.toString());
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }  
+    }
+    private void printLemmatizer(){
+        FileWriter writer;
+        try {
+            writer = new FileWriter("LemmatizerIndex.csv");
+            for (Entry<String, String> entry : lemmatizerMap.entrySet()) {
+                StringBuilder s = new StringBuilder();
+                s.append(entry.getKey() + ",");
+                s.append(entry.getValue());
                 s.append("\n");
                 writer.write(s.toString());
             }

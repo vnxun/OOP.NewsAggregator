@@ -21,24 +21,23 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
     private static Scene scene;
-    private static List<Parent> roots = new ArrayList<>();
-    private static List<FXMLLoader> loaders = new ArrayList<>();
+    private static HashMap<Integer, Parent> roots = new HashMap<>();
+    private static HashMap<Integer,FXMLLoader> loaders = new HashMap<>();
     private static HashMap<Integer, Article> articlesMap = new HashMap<>();
-    //private static List<Article> allArticles = new ArrayList<>();
-    public static final int HOME_SCENE = 0;
-    public static final int SEARCH_SCENE = 1;
-    public static final int READER_SCENE = 2;
-    private static int activeScene = HOME_SCENE, lastScene = HOME_SCENE;
-    private static final String dataFileName = "Main_output.csv";
-    
+    public static final int NEWS_SCENE = 0;
+    public static final int SOCIAL_SCENE = 1;
+    public static final int SEARCH_SCENE = 100;
+    public static final int READER_SCENE = 9999;
+    private static int activeScene = NEWS_SCENE, lastScene = NEWS_SCENE;
+    private static final String dataFileName = "Main_output copy.csv";
 
     @Override
     public void start(Stage stage) {
         try {
-            roots.add(loadRoot("HomeScene"));
-            roots.add(loadRoot("SearchScene"));
-            roots.add(loadRoot("ArticleReaderScene"));
-            scene = new Scene(roots.get(HOME_SCENE));
+            loadRoot(NEWS_SCENE, "NewsScene");
+            loadRoot(SEARCH_SCENE, "SearchScene");
+            loadRoot(READER_SCENE, "ArticleReaderScene");
+            scene = new Scene(roots.get(NEWS_SCENE));
             stage.setTitle("フィードリーダー");
             stage.getIcons().add(new Image(getClass().getResource("icon.png").toURI().toString()));
             stage.setScene(scene);
@@ -54,18 +53,17 @@ public class Main extends Application {
         launch();
     }
 
-    public static Parent loadRoot(String rootName) throws IOException {
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource(rootName + ".fxml"));
+    private static Parent loadRoot(int i,String rootName) throws IOException {
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("view/" + rootName + ".fxml"));
         Parent root = loader.load();
-        loaders.add(loader);
+        loaders.put(i, loader);
+        roots.put(i, root);
         return root;
     }
 
     //Switches
     public static void switchScene(int root){
-        if (root < roots.size()) {
-            scene.setRoot(roots.get(root));
-        }
+        scene.setRoot(roots.get(root));
         lastScene = activeScene;
         activeScene = root;
     }
@@ -78,7 +76,7 @@ public class Main extends Application {
         switchScene(READER_SCENE);
     }
     public static void reloadHome(){
-        HomeSceneController controller = loaders.get(HOME_SCENE).getController();
+        NewsSceneController controller = loaders.get(NEWS_SCENE).getController();
         controller.reload();
     }
     //
@@ -87,7 +85,7 @@ public class Main extends Application {
     public static void readData (){
         BufferedReader bReader;
         try {
-            bReader = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream("output/" + dataFileName)));
+            bReader = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream("source/" + dataFileName)));
             String line;
             while ((line = bReader.readLine()) != null) {
                 List<String> data = splitData(line);
@@ -152,6 +150,6 @@ public class Main extends Application {
     public static HashMap<Integer, Article> getArticlesMap() {
         return articlesMap;
     }
-    
+    // 
 
 }

@@ -8,7 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 
-public class ArticleReaderController extends Controller{
+public class ArticleReaderController {
     @FXML
     private Label authorLabel;
 

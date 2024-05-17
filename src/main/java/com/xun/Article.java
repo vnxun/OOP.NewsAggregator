@@ -30,7 +30,7 @@ public class Article {
 
     private void setThumb(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ArticleThumb.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/ArticleThumb.fxml"));
             thumbnail = loader.load();
             ArticleThumbController thumbController = loader.getController();
             thumbController.setData(this);   
@@ -42,7 +42,7 @@ public class Article {
 
     private void setReader(){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ArticleReader.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/ArticleReader.fxml"));
             reader = loader.load();
             ArticleReaderController readerController = loader.getController();
             readerController.setData(this);   

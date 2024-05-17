@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
-public class ArticleThumbController extends Controller {
+public class ArticleThumbController {
     @FXML
     private Label titleLabel, summaryLabel, sourceLabel, timeLabel;
     private Article article;
