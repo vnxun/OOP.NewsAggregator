@@ -28,6 +28,7 @@ public class Main extends Application {
     public static final int SOCIAL_SCENE = 1;
     public static final int SEARCH_SCENE = 100;
     public static final int READER_SCENE = 9999;
+    public static final int TREND_SCENE = 12345;
     private static int activeScene = NEWS_SCENE, lastScene = NEWS_SCENE;
     private static final String dataFileName = "Main_output copy.csv";
 
@@ -37,6 +38,7 @@ public class Main extends Application {
             loadRoot(NEWS_SCENE, "NewsScene");
             loadRoot(SEARCH_SCENE, "SearchScene");
             loadRoot(READER_SCENE, "ArticleReaderScene");
+            loadRoot(SOCIAL_SCENE, "SocialScene");
             scene = new Scene(roots.get(NEWS_SCENE));
             stage.setTitle("フィードリーダー");
             stage.getIcons().add(new Image(getClass().getResource("icon.png").toURI().toString()));
@@ -63,6 +65,9 @@ public class Main extends Application {
 
     //Switches
     public static void switchScene(int root){
+        if (root == TREND_SCENE) {
+            return;
+        }
         scene.setRoot(roots.get(root));
         lastScene = activeScene;
         activeScene = root;
@@ -86,7 +91,7 @@ public class Main extends Application {
         BufferedReader bReader;
         try {
             bReader = new BufferedReader(new InputStreamReader(Main.class.getResourceAsStream("source/" + dataFileName)));
-            String line;
+            String line = bReader.readLine();
             while ((line = bReader.readLine()) != null) {
                 List<String> data = splitData(line);
                 String link = data.get(0);

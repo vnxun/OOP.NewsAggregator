@@ -22,11 +22,6 @@ public class NewsSceneController extends MenuController implements Initializable
     private List<Article> articles = Main.getArticlesList();
     private int loadedArticles = 0;
 
-    // public void switchSearch(ActionEvent e) throws IOException{
-    //     Main.switchScene(Main.SEARCH_SCENE);
-    // }
-
-
     public void reload(){
         loadedArticles = 0;
         homeGrid.getChildren().clear();

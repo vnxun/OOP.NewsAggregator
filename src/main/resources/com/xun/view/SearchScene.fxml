@@ -53,8 +53,8 @@
       <HBox spacing="20.0" VBox.vgrow="NEVER">
          <children>
             <Button fx:id="newsSwitch" mnemonicParsing="false" onAction="#switchNews" prefHeight="26.0" prefWidth="70.0" text="新聞" textOverrun="CLIP" />
-            <Button fx:id="socialSwitch" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="ソーシャル" textOverrun="CLIP" />
-            <Button fx:id="trendSwitch" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="トレンド" textOverrun="CLIP" />
+            <Button fx:id="socialSwitch" mnemonicParsing="false" onAction="#switchSocial" prefHeight="26.0" prefWidth="70.0" text="ソーシャル" textOverrun="CLIP" />
+            <Button fx:id="trendSwitch" mnemonicParsing="false" onAction="#switchTrend" prefHeight="26.0" prefWidth="70.0" text="トレンド" textOverrun="CLIP" />
             <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="検索" />
          </children>
       </HBox>
@@ -101,7 +101,7 @@
             </HBox>
          </left>
          <right>
-            <Label fx:id="sourceLabel" styleClass="over" stylesheets="@styles.css" text="Sources: All" textFill="#9f9f9f" BorderPane.alignment="CENTER">
+            <Label fx:id="sourceLabel" maxWidth="380.0" onMouseClicked="#selectSources" styleClass="over" stylesheets="@styles.css" text="Sources: All" textFill="#9f9f9f" wrapText="true" BorderPane.alignment="CENTER">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>

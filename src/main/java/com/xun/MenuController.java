@@ -19,9 +19,13 @@ public class MenuController {
     }
 
     public void switchSocial(ActionEvent e) throws IOException{
-        Main.switchScene(Main.NEWS_SCENE);
+        Main.switchScene(Main.SOCIAL_SCENE);
     }
-    
+
+    public void switchTrend(ActionEvent e) throws IOException{
+        Main.switchScene(Main.TREND_SCENE);
+    }
+     
     public void switchBack(){
         Main.switchBack();
     }

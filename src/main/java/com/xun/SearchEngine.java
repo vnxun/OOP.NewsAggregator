@@ -14,11 +14,11 @@ public class SearchEngine {
     private List<Article> allArticles;
     private HashMap<String, Keyword> wordsMap = new HashMap<>();
     private HashMap<String, String> lemmatizerMap = new HashMap<>();
-    private HashMap<String, List<Article>> newsSourceMap = new HashMap<>();
+    private HashMap<String, List<Article>> allSources = new HashMap<>();
 
     public SearchEngine(List<Article> allArticles) {
         this.allArticles = allArticles;
-        getLemmatizer();
+        readLemmatizer();
         indexing();
         printIndex(); printLemmatizer(); // TODO for debugging
     }
@@ -40,12 +40,12 @@ public class SearchEngine {
         scoring(a, tokenize(a.getTitle()), 10);
         
         String np = a.getSource();
-        if (newsSourceMap.get(np) == null) {
+        if (allSources.get(np) == null) {
             List<Article> list = new ArrayList<>();
             list.add(a);
-            newsSourceMap.put(np, list);
+            allSources.put(np, list);
         } else {
-            newsSourceMap.get(np).add(a);
+            allSources.get(np).add(a);
         }
     }
     private void scoring(Article a, List<String> wordsList, int score){
@@ -96,7 +96,7 @@ public class SearchEngine {
         
     }
     
-    private void getLemmatizer(){
+    private void readLemmatizer(){
         BufferedReader bReader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("lemmatizer.csv")));
         String line;
         try {
@@ -109,18 +109,21 @@ public class SearchEngine {
         }
     }
 
-    public List<Article> search(String query){
+    public List<Article> search(String query, List<String> sources){
         HashMap<Article, Integer> articlesScoreMap = new HashMap<>();
         List<String> wordsList = tokenize(query);
         for (String word : wordsList) {
             if (wordsMap.get(word) != null) {
                 for (Article article : wordsMap.get(word).getArticles()) {
-                    int score = wordsMap.get(word).getArticleScore(article);
-                    if (articlesScoreMap.get(article) == null) {
-                        articlesScoreMap.put(article, score);
-                    } else {
-                        articlesScoreMap.put(article, articlesScoreMap.get(article) + score);
+                    if (sourceCheck(sources, article)) {
+                        int score = wordsMap.get(word).getArticleScore(article);
+                        if (articlesScoreMap.get(article) == null) {
+                            articlesScoreMap.put(article, score);
+                        } else {
+                            articlesScoreMap.put(article, articlesScoreMap.get(article) + score);
+                        }
                     }
+                    
                 }
             }
         }
@@ -130,6 +133,14 @@ public class SearchEngine {
         }
         results.sort(new SortArticles(articlesScoreMap));
         return results;
+    }
+    private boolean sourceCheck(List<String> sources, Article a){
+        for (String source : sources) {
+            if (a.getSource().equals(source)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     //Debug
@@ -183,5 +194,13 @@ public class SearchEngine {
             int score2 = articlesScoreMap.get(a2);
             return score2 - score1;
         }   
+    }
+
+    public List<String> getAllSources() {
+        List<String> list = new ArrayList<>();
+        for (Entry<String, List<Article>> entry : allSources.entrySet()) {
+            list.add(entry.getKey());
+        }
+        return list;
     }
 }

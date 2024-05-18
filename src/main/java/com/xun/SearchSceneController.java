@@ -1,5 +1,6 @@
 package com.xun;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
@@ -7,17 +8,25 @@ import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class SearchSceneController extends MenuController implements Initializable{
     private LocalDate startDate = LocalDate.MIN, endDate = LocalDate.now();
     private List<Article> articles;
     private int loadedArticles = 0;
     private SearchEngine searchEngine = new SearchEngine(Main.getArticlesList());
+    private List<String> selectedSources = searchEngine.getAllSources();
+    private boolean started = false;
     @FXML
-    private Label loadLabel, countLabel, sourcLabel;
+    private Stage selectSourcesStage = new Stage();
+    private SourcesSelectorController csController;
+    @FXML
+    private Label loadLabel, countLabel, sourceLabel;
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -39,7 +48,7 @@ public class SearchSceneController extends MenuController implements Initializab
     private void searchByKeywords(ActionEvent e){
         String query = searchTextField.getText();
         if (query.length() > 0) {
-            articles = searchEngine.search(query);
+            articles = searchEngine.search(query, selectedSources);
             loadedArticles = 0;
             grid.getChildren().clear();
             load(null);
@@ -87,11 +96,39 @@ public class SearchSceneController extends MenuController implements Initializab
         }
     }
 
+    public void selectSources(MouseEvent ev){
+            selectSourcesStage.showAndWait();
+            selectedSources = csController.getSelectedSources();
+            if (selectedSources.size() < searchEngine.getAllSources().size()) {
+                StringBuffer sb = new StringBuffer();
+                for (String source : selectedSources) {
+                    sb.append(source + ", ");
+                }
+                sourceLabel.setText("Souces: " + sb.toString());
+            } else {
+                sourceLabel.setText("Souces: All");
+            }
 
+    }
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-
-
-        searchDatePickerEnd.setValue(endDate);
+        if (!started) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("view/SourcesSelector.fxml"));
+                Parent root = loader.load();
+                csController = loader.getController();
+                Scene scene = new Scene(root);
+    
+                selectSourcesStage.setScene(scene);
+                selectSourcesStage.setTitle("Select news sources");
+                selectSourcesStage.setResizable(false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            
+            searchDatePickerEnd.setValue(endDate);
+            started = true;
+        }
+        
     }
 }
