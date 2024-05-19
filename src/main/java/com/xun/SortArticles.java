@@ -5,11 +5,11 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 public class SortArticles implements Comparator<Article>{
-    HashMap<Article, Integer> articlesScoreMap;
+    HashMap<Article, Double> articlesScoreMap;
     public static final int BY_RELEVENCE = 0;
     public static final int BY_DATE = 1;
     private int mode;
-    public SortArticles(HashMap<Article, Integer> articlesScoreMap, int mode){
+    public SortArticles(HashMap<Article, Double> articlesScoreMap, int mode){
         this.articlesScoreMap = articlesScoreMap;
         this.mode = mode;
     }
@@ -19,9 +19,15 @@ public class SortArticles implements Comparator<Article>{
     @Override
     public int compare(Article a1, Article a2) {
         if (mode == BY_RELEVENCE) {
-            int score1 = articlesScoreMap.get(a1);
-            int score2 = articlesScoreMap.get(a2);
-            return score2 - score1;
+            double score1 = articlesScoreMap.get(a1);
+            double score2 = articlesScoreMap.get(a2);
+            if (score2 - score1 < 0) {
+                return -1;
+            }
+            if (score2 == score1) {
+                return 0;
+            }
+            return 1;
         } else {
             LocalDate d1 = a1.getLocalDate();
             LocalDate d2 = a2.getLocalDate();

@@ -4,7 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
 
 public class NewsArticle extends Article{
-    private String title, category, summary, keywords;
+    private String title, category, summary;
     private VBox reader;
 
     //Constructors

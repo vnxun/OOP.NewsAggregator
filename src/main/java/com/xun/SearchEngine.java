@@ -114,13 +114,13 @@ public class SearchEngine {
     }
 
     public List<Article> search(String query, List<String> sources, LocalDate startDate, LocalDate endDate){
-        HashMap<Article, Integer> articlesScoreMap = new HashMap<>();
+        HashMap<Article, Double> articlesScoreMap = new HashMap<>();
         List<String> wordsList = tokenize(query);
         for (String word : wordsList) {
             if (wordsMap.get(word) != null) {
                 for (Article article : wordsMap.get(word).getArticles()) {
                     if (sourceCheck(sources, article) && dateCheck(article, startDate, endDate)) {
-                        int score = wordsMap.get(word).getArticleScore(article);
+                        double score = wordsMap.get(word).getArticleScore(article);
                         if (articlesScoreMap.get(article) == null) {
                             articlesScoreMap.put(article, score);
                         } else {
@@ -132,7 +132,7 @@ public class SearchEngine {
             }
         }
         List<Article> results = new ArrayList<>();
-        for (Entry<Article, Integer> entry : articlesScoreMap.entrySet()) {
+        for (Entry<Article, Double> entry : articlesScoreMap.entrySet()) {
             results.add(entry.getKey());
         }
         results.sort(new SortArticles(articlesScoreMap, SortArticles.BY_RELEVENCE));
