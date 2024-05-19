@@ -1,7 +1,6 @@
 package com.xun;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -20,13 +19,13 @@ public class SocialSceneController extends MenuController implements Initializab
     private GridPane homeGrid;
     @FXML
     private Label loadLabel;
-    private List<Article> articles = new ArrayList<>();// = Main.getArticlesList();
+    private List<Post> articles = Main.getPostsList();// = Main.getArticlesList();
     private int loadedArticles = 0;
 
     public void reload(){
         loadedArticles = 0;
         homeGrid.getChildren().clear();
-        articles = Main.getArticlesList();
+        articles = Main.getPostsList();
         load(null);
     }
 
@@ -37,7 +36,7 @@ public class SocialSceneController extends MenuController implements Initializab
                     loadLabel.setVisible(false);
                     break;
                 }
-                homeGrid.add(articles.get(loadedArticles).getThumbnail(), 0, loadedArticles + 1);
+                homeGrid.add(articles.get(loadedArticles).getCard(), 0, loadedArticles + 1);
                 loadedArticles++;
                 loadLabel.setVisible(true);
             }

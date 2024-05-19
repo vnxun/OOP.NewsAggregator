@@ -14,7 +14,7 @@ public class ReaderSceneController extends MenuController{
     @FXML
     private Hyperlink hyperlink;
 
-    public void setArticle(Article a){
+    public void setArticle(NewsArticle a){
         scrollPane.setContent(a.getReader());
     }
 }

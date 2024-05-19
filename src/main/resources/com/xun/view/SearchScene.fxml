@@ -130,7 +130,7 @@
          <content>
             <VBox alignment="CENTER">
                <children>
-                  <GridPane fx:id="grid" alignment="CENTER" prefHeight="0.0">
+                  <GridPane fx:id="grid" alignment="CENTER">
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>

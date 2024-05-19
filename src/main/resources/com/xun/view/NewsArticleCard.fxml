@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.xun.NewsArticleCardController">
+   <center>
+      <VBox alignment="CENTER_LEFT" maxHeight="154.0" minWidth="0.0" prefWidth="850.0" spacing="10.0">
+         <children>
+            <Label fx:id="titleLabel" minHeight="-Infinity" onMouseClicked="#readArticle" prefHeight="60.0" styleClass="over" stylesheets="@styles.css" text="What is a Blockchain? Is It Hype? - The New York TimesWhat is a Blockchain? Is It Hype? - The New York Times" textAlignment="JUSTIFY" wrapText="true" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Label>
+            <Label fx:id="summaryLabel" minHeight="-Infinity" prefHeight="35.0" text="A technology based on a decentralized network may offer more control over what people do online aaaaaaa aaaaaaaaaa aaaaaaaaaa aa aaaaaa aaaaa aaaa aaaa aaaaaaaaaaaaa aaaaaa aaaa aaaaa aaaaaa aaaaaaaaa aa aaa aaaa aaaaa aaaa aaaa aaaa aaaa" textAlignment="JUSTIFY" wrapText="true" VBox.vgrow="ALWAYS">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Label>
+            <BorderPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="17.0" VBox.vgrow="NEVER">
+               <left>
+                  <Label fx:id="sourceLabel" maxWidth="650.0" minWidth="0.0" prefWidth="650.0" text="The New York Times" wrapText="true" BorderPane.alignment="CENTER_LEFT" />
+               </left>
+               <right>
+                  <Label fx:id="timeLabel" text="2021-01-26T18:10:35.000Z" BorderPane.alignment="CENTER" />
+               </right>
+            </BorderPane>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" />
+         </padding>
+      </VBox>
+   </center>
+   <bottom>
+      <Line endX="800.0" stroke="#9f9f9f" strokeWidth="2.0" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </BorderPane.margin>
+      </Line>
+   </bottom>
+</BorderPane>

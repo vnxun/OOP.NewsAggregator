@@ -1,10 +1,11 @@
 import csv
-from datetime import datetime
+from datetime import datetime, timedelta
 import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 stop_words = set(stopwords.words('english'))
 ps = PorterStemmer()
@@ -16,12 +17,12 @@ data = []
 with open('Output_test.csv', 'r', encoding='ISO-8859-1') as file:
     csv_reader = csv.reader(file)
     for row in csv_reader:
-        if len(row) == 3:  # Check if the row has three elements
+        if len(row) == 3:  
             url, date_str, content = row
             data.append((date_str, content))
 
-start_date = datetime.strptime("01/01/2018", '%m/%d/%Y')
-end_date = datetime.strptime("01/06/2022", '%m/%d/%Y')
+start_date = datetime.strptime("01/01/2022", '%d/%m/%Y')
+end_date = datetime.strptime("01/01/2023", '%d/%m/%Y')
 
 word_counts = []
 
@@ -33,7 +34,7 @@ for date_str, content in data:
             date_str = '/'.join(date_parts)
 
         try:
-            article_date = datetime.strptime(date_str, '%m/%d/%Y')
+            article_date = datetime.strptime(date_str, '%d/%m/%Y')
             if start_date <= article_date <= end_date:
                 words = word_tokenize(content.lower())
                 filtered_words = [ps.stem(word) for word in words if word.isalnum() and word not in stop_words]
@@ -52,6 +53,14 @@ plt.xlabel('Date')
 plt.ylabel(f'Frequency of "{search_word}"')
 plt.title(f'Frequency of "{search_word}" over Time')
 plt.xticks(rotation=45)
+
+# Calculate the number of ticks you want on the x-axis
+num_ticks = 10
+days_interval = (end_date - start_date) / num_ticks
+
+# Set the tick frequency to show 10 ticks on the x-axis
+plt.gca().xaxis.set_major_locator(mdates.DayLocator(interval=days_interval.days))
+
 plt.grid(True)
 plt.tight_layout()
 
@@ -60,5 +69,5 @@ plt.savefig('frequency_word.png')
 plt.show()
 
 max_count = max(counts)
-scores = [count / max_count * 100 for count in counts]
+scores = [count / max_count * 50 for count in counts]
 print("Scores:", scores)

@@ -76,9 +76,9 @@
             <Insets />
          </VBox.margin>
          <content>
-            <VBox alignment="CENTER">
+            <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                <children>
-                  <GridPane fx:id="homeGrid" alignment="CENTER" prefHeight="0.0">
+                  <GridPane fx:id="homeGrid" alignment="CENTER" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                     <rowConstraints>
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
