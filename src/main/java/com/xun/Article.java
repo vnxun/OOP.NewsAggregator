@@ -1,66 +1,42 @@
 package com.xun;
 
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.VBox;
+import java.time.LocalDate;
 
-public class Article {
-    private String link, title, category, content, date, summary, author, keywords, source;
-    private VBox thumbnail = null, reader = null;
+import javafx.scene.layout.BorderPane;
+
+public abstract class Article {
+    protected String link, content, date, author, source, keywords;
+    protected BorderPane card;
+    protected LocalDate localDate;
     
     //Constructors
-    public Article(String link, String title, String content){
+    protected Article(String link, String source, String content, String author, String date, String keywords){
         this.link = link;
-        this.title = title;
+        this.source = source;
         this.content = content;
+        this.author = author;
+        this.keywords = keywords;
         try {
-            StringBuilder s = new StringBuilder(); //take the first sentence of the content
-            for (int i = 0; i < content.length(); i++) {
-                if (!(content.charAt(i) == '.' && content.charAt(i+1) == ' ')) {
-                    s.append(content.charAt(i));
-                } else {
-                    s.append('.');
-                    break;
-                }
+            String d = date.substring(0, 2);
+            String m = date.substring(3, 5);
+            String y = date.substring(6, 10);
+            String s = y + "-" + m + "-" + d;
+            if (LocalDate.parse(s.toString()).isAfter(LocalDate.now())) {
+                this.localDate = LocalDate.parse((y + "-" + d + "-" + m).toString());
+                this.date = y + "-" + d + "-" + m;
+            } else {
+                this.localDate = LocalDate.parse(s.toString());
+                this.date = y + "-" + m + "-" + d;
             }
-            this.summary = s.toString();
         } catch (Exception e) {
-            this.summary = content;
-        }             
-    }
-
-    private void setThumb(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/ArticleThumb.fxml"));
-            thumbnail = loader.load();
-            ArticleThumbController thumbController = loader.getController();
-            thumbController.setData(this);   
-        } catch (Exception e) {
-            e.printStackTrace();
+            localDate = LocalDate.MIN;
         }
-
-    }
-
-    private void setReader(){
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/ArticleReader.fxml"));
-            reader = loader.load();
-            ArticleReaderController readerController = loader.getController();
-            readerController.setData(this);   
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+      
     }
 
     //Accessors
-
     public String getLink() {
         return link;
-    }
-    public String getTitle() {
-        return title;
-    }
-    public String getCategory() {
-        return category;
     }
     public String getContent() {
         return content;
@@ -68,26 +44,26 @@ public class Article {
     public String getDate() {
         return date;
     }
-
-
-    public void setCategory(String category) {
-        this.category = category;
+    public String getAuthor() {
+        return author;
     }
-
-    public void setDate(String date) {
-        this.date = date;
+    public String getSource() {
+        return source;
     }
-
-    public String getSummary() {
-        return summary;
+    public String getKeywords() {
+        return keywords;
     }
-
-    public void setSummary(String summary) {
-        if (!summary.isEmpty() && summary.length() > 10) {
-            this.summary = summary;
+    protected void setCard(){
+    }
+    public BorderPane getCard() {
+        if (card == null) {
+            setCard();
         }
+        return card;
     }
-
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -112,47 +88,10 @@ public class Article {
             return false;
         return true;
     }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public VBox getThumbnail() {
-        if (thumbnail == null) {
-            setThumb();
-        }
-        return thumbnail;
-    }
-    
-    public VBox getReader() {
-        if (reader == null) {
-            setReader();
-        }
-        return reader;
-    }
-
-    public String getKeywords() {
-        return keywords;
-    }
-
-    public void setKeywords(String keywords) {
-        this.keywords = keywords;
-    }
-
     @Override 
     public String toString(){
-        return String.format("[%s] %s", hashCode(), link);
+        return String.format("[%s] %s", source, link);
     }
 
-    public String getSource() {
-        return source;
-    }
 
-    public void setSource(String source) {
-        this.source = source;
-    }
 }

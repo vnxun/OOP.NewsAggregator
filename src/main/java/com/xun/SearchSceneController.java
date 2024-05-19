@@ -3,6 +3,7 @@ package com.xun;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -17,7 +18,7 @@ import javafx.stage.Stage;
 
 public class SearchSceneController extends MenuController implements Initializable{
     private LocalDate startDate = LocalDate.MIN, endDate = LocalDate.now();
-    private List<Article> articles;
+    private List<Article> articles = new ArrayList<>();
     private int loadedArticles = 0;
     private SearchEngine searchEngine = new SearchEngine(Main.getArticlesList());
     private List<String> selectedSources = searchEngine.getAllSources();
@@ -41,18 +42,16 @@ public class SearchSceneController extends MenuController implements Initializab
     private ScrollPane searchScrollPane;
 
     public void search(ActionEvent e){
-        searchByKeywords(e);
-        countLabel.setText(articles.size() + " results found");
-    }
-
-    private void searchByKeywords(ActionEvent e){
         String query = searchTextField.getText();
         if (query.length() > 0) {
-            articles = searchEngine.search(query, selectedSources);
-            loadedArticles = 0;
-            grid.getChildren().clear();
-            load(null);
-        } 
+            articles = searchEngine.search(query, selectedSources, startDate, endDate);
+        } else {
+            articles = searchEngine.search(selectedSources, startDate, endDate);
+        }
+        loadedArticles = 0;
+        grid.getChildren().clear();
+        load(null);
+        countLabel.setText(articles.size() + " results found");
     }
 
     public void load(MouseEvent event){
@@ -62,7 +61,7 @@ public class SearchSceneController extends MenuController implements Initializab
                     loadLabel.setVisible(false);
                     return;
                 }
-                grid.add(articles.get(loadedArticles).getThumbnail(), 0, loadedArticles + 1);
+                grid.add(articles.get(loadedArticles).getCard(), 0, loadedArticles + 1);
                 loadedArticles++;
                 loadLabel.setVisible(true);
             }
@@ -108,6 +107,7 @@ public class SearchSceneController extends MenuController implements Initializab
             } else {
                 sourceLabel.setText("Souces: All");
             }
+            search(null);
 
     }
     @Override

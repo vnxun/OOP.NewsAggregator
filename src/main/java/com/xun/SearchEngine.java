@@ -4,8 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -35,10 +35,12 @@ public class SearchEngine {
 
     private void indexing(Article a){
         scoring(a, tokenize(a.getContent()), 1);
-        scoring(a, tokenize(a.getSummary()), 2);
         scoring(a, tokenize(a.getKeywords()), 5);
-        scoring(a, tokenize(a.getTitle()), 10);
-        
+        if (a instanceof NewsArticle) {
+            NewsArticle na = (NewsArticle) a;
+            scoring(na, tokenize(na.getSummary()), 2);
+            scoring(na, tokenize(na.getTitle()), 10);
+        }
         String np = a.getSource();
         if (allSources.get(np) == null) {
             List<Article> list = new ArrayList<>();
@@ -60,30 +62,34 @@ public class SearchEngine {
         }
     }
 
-    private List<String> tokenize(String string){
+    private List<String> tokenize(String string) {
         List<String> list = new ArrayList<>();
-        StringBuffer buffer = new StringBuffer();
-        for (int i = 0; i < string.length(); i++) {
-            char c = string.charAt(i);
-            if (Character.isWhitespace(c) || c == ',' || c == ';') {
-                if (buffer.length() > 1) {
-                    list.add(lemmatize(buffer.toString()));
-                }
-                buffer.setLength(0);
-            } else if (i == string.length() - 1) {
-                if (Character.isLetter(c)) {
+        try {
+            StringBuffer buffer = new StringBuffer();
+            for (int i = 0; i < string.length(); i++) {
+                char c = string.charAt(i);
+                if (Character.isWhitespace(c) || c == ',' || c == ';') {
+                    if (buffer.length() > 1) {
+                        list.add(lemmatize(buffer.toString()));
+                    }
+                    buffer.setLength(0);
+                } else if (i == string.length() - 1) {
+                    if (Character.isLetter(c)) {
+                        buffer.append(Character.toLowerCase(c));
+                    } else if (Character.isDigit(c)) {
+                        buffer.append(c);
+                    }
+                    if (buffer.length() > 1) {
+                        list.add(lemmatize(buffer.toString()));
+                    }
+                } else if (Character.isLetter(c)) {
                     buffer.append(Character.toLowerCase(c));
                 } else if (Character.isDigit(c)) {
                     buffer.append(c);
                 }
-                if (buffer.length() > 1) {
-                    list.add(lemmatize(buffer.toString()));
-                }
-            } else if (Character.isLetter(c)) {
-                buffer.append(Character.toLowerCase(c));
-            } else if (Character.isDigit(c)) {
-                buffer.append(c);
             }
+        } catch (NullPointerException e) {
+            
         }
         return list;
     }
@@ -109,13 +115,13 @@ public class SearchEngine {
         }
     }
 
-    public List<Article> search(String query, List<String> sources){
+    public List<Article> search(String query, List<String> sources, LocalDate startDate, LocalDate endDate){
         HashMap<Article, Integer> articlesScoreMap = new HashMap<>();
         List<String> wordsList = tokenize(query);
         for (String word : wordsList) {
             if (wordsMap.get(word) != null) {
                 for (Article article : wordsMap.get(word).getArticles()) {
-                    if (sourceCheck(sources, article)) {
+                    if (sourceCheck(sources, article) && dateCheck(article, startDate, endDate)) {
                         int score = wordsMap.get(word).getArticleScore(article);
                         if (articlesScoreMap.get(article) == null) {
                             articlesScoreMap.put(article, score);
@@ -131,7 +137,16 @@ public class SearchEngine {
         for (Entry<Article, Integer> entry : articlesScoreMap.entrySet()) {
             results.add(entry.getKey());
         }
-        results.sort(new SortArticles(articlesScoreMap));
+        results.sort(new SortArticles(articlesScoreMap, SortArticles.BY_RELEVENCE));
+        return results;
+    }
+    public List<Article> search(List<String> sources, LocalDate startDate, LocalDate endDate){
+        List<Article> results = new ArrayList<>();
+        for (Article article : allArticles) {
+            if (sourceCheck(sources, article) && dateCheck(article, startDate, endDate)) {
+                results.add(article);
+            }
+        }
         return results;
     }
     private boolean sourceCheck(List<String> sources, Article a){
@@ -140,6 +155,14 @@ public class SearchEngine {
                 return true;
             }
         }
+        return false;
+    }
+    private boolean dateCheck(Article a, LocalDate startDate, LocalDate endDate){
+        if (a.getLocalDate().isBefore(endDate) && a.getLocalDate().isAfter(startDate)){
+            return true;
+        } else if (a.getLocalDate().isEqual(endDate) || a.getLocalDate().isEqual(startDate)){
+            return true;
+        } 
         return false;
     }
 
@@ -182,19 +205,19 @@ public class SearchEngine {
     }
     //
 
-    private class SortArticles implements Comparator<Article>{
-        HashMap<Article, Integer> articlesScoreMap;
+    // private class SortArticles implements Comparator<Article>{
+    //     HashMap<Article, Integer> articlesScoreMap;
 
-        public SortArticles(HashMap<Article, Integer> articlesScoreMap){
-            this.articlesScoreMap = articlesScoreMap;
-        }
-        @Override
-        public int compare(Article a1, Article a2) {
-            int score1 = articlesScoreMap.get(a1);
-            int score2 = articlesScoreMap.get(a2);
-            return score2 - score1;
-        }   
-    }
+    //     public SortArticles(HashMap<Article, Integer> articlesScoreMap){
+    //         this.articlesScoreMap = articlesScoreMap;
+    //     }
+    //     @Override
+    //     public int compare(Article a1, Article a2) {
+    //         int score1 = articlesScoreMap.get(a1);
+    //         int score2 = articlesScoreMap.get(a2);
+    //         return score2 - score1;
+    //     }   
+    // }
 
     public List<String> getAllSources() {
         List<String> list = new ArrayList<>();

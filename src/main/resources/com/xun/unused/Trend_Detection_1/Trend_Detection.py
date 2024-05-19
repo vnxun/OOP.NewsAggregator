@@ -8,14 +8,25 @@ from nltk.stem import PorterStemmer
 import pandas as pd
 import matplotlib.pyplot as plt
 
-nltk.download('punkt')
-nltk.download('stopwords')
-
 stop_words = set(stopwords.words('english'))
 ps = PorterStemmer()
 
-with open('output_2.csv', 'r', encoding='latin1') as file:
-    text = file.read()
+start_date = datetime.strptime('2022-01-01', '%Y-%m-%d')
+end_date = datetime.strptime('2022-12-31', '%Y-%m-%d')
+
+filtered_articles = []
+
+with open('input_trend_detection.csv', 'r', encoding='latin1') as file:
+    reader = csv.reader(file)
+    next(reader)  # Skip header
+    for row in reader:
+        if len(row) >= 2:  
+            date_string = row[0].split()[0]
+            article_date = datetime.strptime(date_string, '%d/%m/%Y')  
+            if start_date <= article_date <= end_date:
+                filtered_articles.append(row[1])
+
+text = ' '.join(filtered_articles)
 
 words = word_tokenize(text.lower())
 
@@ -35,4 +46,3 @@ table = plt.table(cellText=df.values, colLabels=df.columns, loc='center', cellLo
 table.auto_set_font_size(False)
 table.set_fontsize(12)
 plt.savefig('frequency_table.png', bbox_inches='tight', pad_inches=0.1)
-
