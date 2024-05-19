@@ -48,17 +48,17 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.xun.SearchSceneController">
+<VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" spacing="10.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.xun.SearchSceneController">
    <children>
       <HBox spacing="20.0" VBox.vgrow="NEVER">
          <children>
-            <Button fx:id="newsSwitch" mnemonicParsing="false" onAction="#switchNews" prefHeight="26.0" prefWidth="70.0" text="新聞" textOverrun="CLIP" />
-            <Button fx:id="socialSwitch" mnemonicParsing="false" onAction="#switchSocial" prefHeight="26.0" prefWidth="70.0" text="ソーシャル" textOverrun="CLIP" />
-            <Button fx:id="trendSwitch" mnemonicParsing="false" onAction="#switchTrend" prefHeight="26.0" prefWidth="70.0" text="トレンド" textOverrun="CLIP" />
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="検索" />
+            <Button fx:id="newsSwitch" mnemonicParsing="false" onAction="#switchNews" prefHeight="26.0" prefWidth="70.0" text="News" textOverrun="CLIP" />
+            <Button fx:id="socialSwitch" mnemonicParsing="false" onAction="#switchSocial" prefHeight="26.0" prefWidth="70.0" text="Social" textOverrun="CLIP" />
+            <Button fx:id="trendSwitch" mnemonicParsing="false" onAction="#switchTrend" prefHeight="26.0" prefWidth="70.0" text="Trend" textOverrun="CLIP" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="Search" />
          </children>
       </HBox>
-<Label alignment="CENTER" style="&#10;" text="検索" textAlignment="CENTER" wrapText="false">
+<Label alignment="TOP_LEFT" maxWidth="1.7976931348623157E308" style="&#10;" text="Search" textAlignment="CENTER" wrapText="false">
          <font>
     <Font size="18.0" fx:id="x1" />
          </font>
@@ -73,7 +73,7 @@
                   <Font size="14.0" />
                </font>
             </TextField>
-            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#search" prefHeight="30.0" prefWidth="191.0" text="検索">
+            <Button fx:id="searchButton" mnemonicParsing="false" onAction="#search" prefHeight="30.0" prefWidth="191.0" text="Search">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -83,7 +83,7 @@
             </Button>
          </children>
       </HBox>
-      <BorderPane>
+      <BorderPane maxWidth="879.2">
          <left>
             <HBox alignment="CENTER" spacing="5.0" BorderPane.alignment="CENTER">
                <children>
@@ -113,7 +113,7 @@
       </BorderPane>
       <BorderPane>
          <left>
-            <Label alignment="CENTER" style="&#10;" text="結果" textAlignment="CENTER" wrapText="false" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" style="&#10;" text="Results" textAlignment="CENTER" wrapText="false" BorderPane.alignment="CENTER">
                <font>
                   <Font size="18.0" fx:id="x12" />
                </font>
@@ -138,7 +138,7 @@
                         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
                      </columnConstraints>
                   </GridPane>
-                  <Label fx:id="loadLabel" alignment="CENTER" ellipsisString="" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#load" prefHeight="50.0" styleClass="over" stylesheets="@styles.css" text="CLICK TO LOAD MORE / クリックでもっと見る" textAlignment="CENTER" textFill="#9f9f9f" VBox.vgrow="NEVER">
+                  <Label fx:id="loadLabel" alignment="CENTER" ellipsisString="" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#load" prefHeight="50.0" styleClass="over" stylesheets="@styles.css" text="CLICK TO LOAD MORE" textAlignment="CENTER" textFill="#9f9f9f" VBox.vgrow="NEVER">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>

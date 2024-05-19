@@ -50,15 +50,15 @@
    <children>
       <HBox spacing="20.0" VBox.vgrow="NEVER">
          <children>
-            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="新聞" textOverrun="CLIP" />
-            <Button fx:id="socialSwitch" mnemonicParsing="false" onAction="#switchSocial" prefHeight="26.0" prefWidth="70.0" text="ソーシャル" textOverrun="CLIP" />
-            <Button fx:id="trendSwitch" mnemonicParsing="false" onAction="#switchTrend" prefHeight="26.0" prefWidth="70.0" text="トレンド" textOverrun="CLIP" />
-            <Button fx:id="searchSwitch" mnemonicParsing="false" onAction="#switchSearch" prefHeight="26.0" prefWidth="70.0" text="検索" />
+            <Button mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="News" textOverrun="CLIP" />
+            <Button fx:id="socialSwitch" mnemonicParsing="false" onAction="#switchSocial" prefHeight="26.0" prefWidth="70.0" text="Social" textOverrun="CLIP" />
+            <Button fx:id="trendSwitch" mnemonicParsing="false" onAction="#switchTrend" prefHeight="26.0" prefWidth="70.0" text="Trend" textOverrun="CLIP" />
+            <Button fx:id="searchSwitch" mnemonicParsing="false" onAction="#switchSearch" prefHeight="26.0" prefWidth="70.0" text="Search" />
          </children>
       </HBox>
       <BorderPane>
          <left>
-      <Label alignment="CENTER" style="&#10;" text="新聞" textAlignment="CENTER" wrapText="false" BorderPane.alignment="CENTER">
+      <Label alignment="CENTER" style="&#10;" text="News" textAlignment="CENTER" wrapText="false" BorderPane.alignment="CENTER">
                <font>
           <Font size="18.0" fx:id="x1" />
                </font>
@@ -68,7 +68,7 @@
             </Label>
          </left>
          <right>
-            <Button fx:id="reloadButton" mnemonicParsing="false" onAction="#reload" text="リロード" BorderPane.alignment="CENTER" />
+            <Button fx:id="reloadButton" mnemonicParsing="false" onAction="#reload" text="Reload" BorderPane.alignment="CENTER" />
          </right>
       </BorderPane>
       <ScrollPane fx:id="homeScrollPane" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="502.0" VBox.vgrow="ALWAYS">
@@ -86,7 +86,7 @@
                         <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" />
                      </columnConstraints>
                   </GridPane>
-                  <Label fx:id="loadLabel" alignment="CENTER" ellipsisString="" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#load" prefHeight="50.0" styleClass="over" stylesheets="@styles.css" text="CLICK TO LOAD MORE / クリックでもっと見る" textAlignment="CENTER" textFill="#9f9f9f" VBox.vgrow="NEVER">
+                  <Label fx:id="loadLabel" alignment="CENTER" ellipsisString="" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#load" prefHeight="50.0" styleClass="over" stylesheets="@styles.css" text="CLICK TO LOAD MORE" textAlignment="CENTER" textFill="#9f9f9f" VBox.vgrow="NEVER">
                      <font>
                         <Font name="System Bold" size="24.0" />
                      </font>

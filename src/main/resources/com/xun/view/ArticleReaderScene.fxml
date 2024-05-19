@@ -43,15 +43,15 @@
    <children>
       <BorderPane VBox.vgrow="NEVER">
          <right>
-            <Button fx:id="backButton" mnemonicParsing="false" onAction="#switchBack" prefHeight="26.0" prefWidth="60.0" text="戻る" BorderPane.alignment="CENTER" />
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#switchBack" prefHeight="26.0" prefWidth="60.0" text="Back" BorderPane.alignment="CENTER" />
          </right>
          <left>
             <HBox spacing="20.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="newsSwitch" mnemonicParsing="false" onAction="#switchNews" prefHeight="26.0" prefWidth="70.0" text="新聞" textOverrun="CLIP" />
-                  <Button fx:id="socialSwitch" mnemonicParsing="false" onAction="#switchSocial" prefHeight="26.0" prefWidth="70.0" text="ソーシャル" textOverrun="CLIP" />
-                  <Button fx:id="trendSwitch" mnemonicParsing="false" onAction="#switchTrend" prefHeight="26.0" prefWidth="70.0" text="トレンド" textOverrun="CLIP" />
-                  <Button fx:id="searchSwitch" mnemonicParsing="false" onAction="#switchSearch" prefHeight="26.0" prefWidth="70.0" text="検索" />
+                  <Button fx:id="newsSwitch" mnemonicParsing="false" onAction="#switchNews" prefHeight="26.0" prefWidth="70.0" text="News" textOverrun="CLIP" />
+                  <Button fx:id="socialSwitch" mnemonicParsing="false" onAction="#switchSocial" prefHeight="26.0" prefWidth="70.0" text="Social" textOverrun="CLIP" />
+                  <Button fx:id="trendSwitch" mnemonicParsing="false" onAction="#switchTrend" prefHeight="26.0" prefWidth="70.0" text="Trend" textOverrun="CLIP" />
+                  <Button fx:id="searchSwitch" mnemonicParsing="false" onAction="#switchSearch" prefHeight="26.0" prefWidth="70.0" text="Search" />
                </children>
             </HBox>
          </left>

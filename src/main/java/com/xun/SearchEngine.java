@@ -1,7 +1,6 @@
 package com.xun;
 
 import java.io.BufferedReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
@@ -20,7 +19,6 @@ public class SearchEngine {
         this.allArticles = allArticles;
         readLemmatizer();
         indexing();
-        //printIndex(); printLemmatizer(); // TODO for debugging
     }
 
     private void indexing(){

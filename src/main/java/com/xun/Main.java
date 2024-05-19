@@ -39,6 +39,7 @@ public class Main extends Application {
             loadRoot(SEARCH_SCENE, "SearchScene");
             loadRoot(READER_SCENE, "ArticleReaderScene");
             loadRoot(SOCIAL_SCENE, "SocialScene");
+            loadRoot(TREND_SCENE, "TrendScene");
             scene = new Scene(roots.get(NEWS_SCENE));
             stage.setTitle("見ないほうがいい");
             stage.getIcons().add(new Image(getClass().getResource("icon.png").toURI().toString()));
@@ -67,9 +68,6 @@ public class Main extends Application {
 
     //Switches
     public static void switchScene(int root){
-        if (root == TREND_SCENE) {
-            return;
-        }
         scene.setRoot(roots.get(root));
         lastScene = activeScene;
         activeScene = root;
