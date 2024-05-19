@@ -20,7 +20,7 @@ public class SearchEngine {
         this.allArticles = allArticles;
         readLemmatizer();
         indexing();
-        printIndex(); printLemmatizer(); // TODO for debugging
+        //printIndex(); printLemmatizer(); // TODO for debugging
     }
 
     private void indexing(){
@@ -166,58 +166,46 @@ public class SearchEngine {
         return false;
     }
 
-    //Debug
-    private void printIndex(){
-        FileWriter writer;
-        try {
-            writer = new FileWriter("WordsIndex.csv");
-            for (Entry<String, Keyword> entry : wordsMap.entrySet()) {
-                StringBuilder s = new StringBuilder();
-                s.append(entry.getValue() + ",");
-                for (Article article : entry.getValue().getArticles()) {
-                    s.append("score:" + entry.getValue().getArticleScore(article) + " ");
-                    s.append(article);
-                    s.append(",");
-                }
-                s.append("\n");
-                writer.write(s.toString());
-            }
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }  
-    }
-    private void printLemmatizer(){
-        FileWriter writer;
-        try {
-            writer = new FileWriter("LemmatizerIndex.csv");
-            for (Entry<String, String> entry : lemmatizerMap.entrySet()) {
-                StringBuilder s = new StringBuilder();
-                s.append(entry.getKey() + ",");
-                s.append(entry.getValue());
-                s.append("\n");
-                writer.write(s.toString());
-            }
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }  
-    }
+    // //Debug
+    // private void printIndex(){
+    //     FileWriter writer;
+    //     try {
+    //         writer = new FileWriter("WordsIndex.csv");
+    //         for (Entry<String, Keyword> entry : wordsMap.entrySet()) {
+    //             StringBuilder s = new StringBuilder();
+    //             s.append(entry.getValue() + ",");
+    //             for (Article article : entry.getValue().getArticles()) {
+    //                 s.append("score:" + entry.getValue().getArticleScore(article) + " ");
+    //                 s.append(article);
+    //                 s.append(",");
+    //             }
+    //             s.append("\n");
+    //             writer.write(s.toString());
+    //         }
+    //         writer.close();
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }  
+    // }
+    // private void printLemmatizer(){
+    //     FileWriter writer;
+    //     try {
+    //         writer = new FileWriter("LemmatizerIndex.csv");
+    //         for (Entry<String, String> entry : lemmatizerMap.entrySet()) {
+    //             StringBuilder s = new StringBuilder();
+    //             s.append(entry.getKey() + ",");
+    //             s.append(entry.getValue());
+    //             s.append("\n");
+    //             writer.write(s.toString());
+    //         }
+    //         writer.close();
+    //     } catch (IOException e) {
+    //         e.printStackTrace();
+    //     }  
+    // }
     //
 
-    // private class SortArticles implements Comparator<Article>{
-    //     HashMap<Article, Integer> articlesScoreMap;
 
-    //     public SortArticles(HashMap<Article, Integer> articlesScoreMap){
-    //         this.articlesScoreMap = articlesScoreMap;
-    //     }
-    //     @Override
-    //     public int compare(Article a1, Article a2) {
-    //         int score1 = articlesScoreMap.get(a1);
-    //         int score2 = articlesScoreMap.get(a2);
-    //         return score2 - score1;
-    //     }   
-    // }
 
     public List<String> getAllSources() {
         List<String> list = new ArrayList<>();
